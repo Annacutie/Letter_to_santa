@@ -1,7 +1,7 @@
 var db;
 const DB_name="Letter_to_santa";
 const db_version=5;
-const storage_name='user_data';
+const storegeName='user_data';
 document.getElementById("save").addEventListener("click", saveData);
 let openRequest = indexedDB.open(DB_name, db_version);
 openRequest.addEventListener('upgradeneeded',(event)=> {
@@ -14,7 +14,7 @@ openRequest.addEventListener('upgradeneeded',(event)=> {
     }
 })
 
-openRequest.addEventListener('sucssess',(event)=>{
+openRequest.addEventListener('success',(event)=>{
     db=event.target.result;
     console.log('success');
 })
@@ -37,13 +37,41 @@ tx.oncomplete=(event)=>{
 tx.onerror=(error)=>{
     console.warn(error)   
 }
-let store=tx.objectStore(storage_name);
+let store=tx.objectStore(storegeName);
 let request=store.add(letterData);
 
 request.onsuccess=(event)=>{
     console.log('Successful add')   
 }
 
-requset.onerror=(error)=>{
+request.onerror=(error)=>{
     console.warn(error)   
 }}
+
+function display() {
+    let pTag=document.getElementById('display_data');
+    pTag.InnerHtml='';
+    let tx=db.transaction(storegeName, 'readwrite');
+tx.oncomplete=(event)=>{
+    console.log(event)   
+}
+
+tx.onerror=(error)=>{
+    console.warn(error)   
+}
+let store=tx.objectStore(storegeName);
+let request=store.getAll();
+
+request.onsuccess=(event)=>{
+    console.log('Successful read');
+    let get_request=event.target
+    for (const i in get_request.result){
+        pTag.InnerHtml+=`${getrequest.result[i].id}`
+    }
+}
+
+request.onerror=(error)=>{
+    console.warn(error)   
+}
+}
+display()
