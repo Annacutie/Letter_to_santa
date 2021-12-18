@@ -17,8 +17,13 @@ openRequest.addEventListener('upgradeneeded',(event)=> {
 openRequest.addEventListener('success',(event)=>{
     db=event.target.result;
     console.log('success');
+    display();
 })
-
+openRequest.addEventListener('complete', (event)=>{
+    db=event.target.result;
+    display();
+}
+)
 openRequest.addEventListener('error',(error)=>{
     console.warn(error)}) 
 
@@ -45,14 +50,18 @@ request.onsuccess=(event)=>{
 }
 
 request.onerror=(error)=>{
-    console.warn(error)   
-}}
+    console.warn(error) 
+
+}
+display()
+}
 
 function display() {
     let pTag=document.getElementById('display_data');
-    pTag.InnerHtml='';
+    pTag.innerHTML='';
+    var db;
     let tx=db.transaction(storegeName, 'readwrite');
-tx.oncomplete=(event)=>{
+    tx.oncomplete=(event)=>{
     console.log(event)   
 }
 
@@ -66,12 +75,19 @@ request.onsuccess=(event)=>{
     console.log('Successful read');
     let get_request=event.target
     for (const i in get_request.result){
-        pTag.InnerHtml+=`${getrequest.result[i].id}`
+        pTag.innerHTML+=`<span id='display_name'> ${get_request.result[i].name}</span>
+         <span id='display_city'> ${get_request.result[i].city}</span> 
+         <span id='display_gift_wish'> ${get_request.result[i].gift_wish}</span>`
+        
+        
     }
 }
 
 request.onerror=(error)=>{
     console.warn(error)   
 }
+
 }
-display()
+window.addEventListener('load', ()=>{
+  
+})
